@@ -4,12 +4,14 @@ import { NgModule } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { AppComponent } from './app.component';
 import { MapperComponent } from './mapper/mapper.component';
+import { ChildComponent } from './child/child.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    MapperComponent
+    MapperComponent,
+    ChildComponent
   ],
   imports: [
     BrowserModule,

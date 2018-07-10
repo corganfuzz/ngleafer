@@ -10,9 +10,11 @@ import { HttpClient } from '@angular/common/http';
 
 export class MapperComponent implements OnInit {
 
+    public layersControl: any;
+
   // adding geojson from a file
 
-  DARK_PNG = tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}{r}.png', {
+DARK_PNG = tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}{r}.' + 'png', {
     detectRetina: true,
     maxZoom: 18,
     attribution: 'My Own Business'
@@ -30,23 +32,11 @@ export class MapperComponent implements OnInit {
     attribution: 'My Third Business'
   });
 
-  // layersControl = {
-  //       baseLayers: {
-  //         'Tactical Map': this.DARK_PNG,
-  //         'Clear Map': this.WHITE_MAP,
-  //         'Topology Map(new)': this.NEW_TOPO,
-  //       },
-  //       // overlays: {
-  //       //   'USA' : usaLayer
-  //       // }
-  // };
-
   options = {
     layers: [this.DARK_PNG],
     zoom: 3,
     center: latLng(54.5260, -105.2551)
   };
-
 
   markers: Layer[] =
   [
@@ -69,30 +59,24 @@ export class MapperComponent implements OnInit {
 
 constructor(private http: HttpClient) { }
 
-ngOnInit() {
-  this.http.get < any > ('/assets/geojson/USA.geo.json')
-  .subscribe(usa => {
-    const usaLayer = geoJSON(usa);
-    console.log(usaLayer);
+  ngOnInit() {
+    this.http.get<any>('/assets/geojson/USA.geo.json')
+      .subscribe(usa => {
+        const usaLayer = geoJSON(usa);
+        // console.log(usaLayer);
 
-     this.layersControl = {
-      baseLayers: {
-        'Tactical Map': this.DARK_PNG,
-        'Clear Map': this.WHITE_MAP,
-        'Topology Map(new)': this.NEW_TOPO,
-      },
-      overlays: {
-        'USA' : usaLayer
-      }
-    };
-
-    this.options = {
-      layers: [this.DARK_PNG],
-      zoom: 3,
-      center: latLng(54.5260, -105.2551)
-    };
-  });
-
+        this.layersControl = {
+          baseLayers: {
+            'Tactical Map': this.DARK_PNG,
+            'Clear Map': this.WHITE_MAP,
+            'Topology Map(new)': this.NEW_TOPO,
+          },
+          overlays: {
+            'USA': usaLayer
+          }
+        };
+      });
+  }
 }
 
 

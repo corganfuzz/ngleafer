@@ -1,2 +1,6 @@
 <app-mapper></app-mapper>
 
+<app-child (childEvent)="message=$event" [parentData]="name"></app-child>
+
+<h3> {{message}} </h3>
+
