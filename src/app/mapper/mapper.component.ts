@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { latLng, Layer, tileLayer, marker, icon, geoJSON} from 'leaflet';
 import { HttpClient } from '@angular/common/http';
+import { MapserviceService } from '../services/mapservice.service';
 
 @Component({
   selector: 'app-mapper',
@@ -11,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 export class MapperComponent implements OnInit {
 
     public layersControl: any;
+    public geoJsonData = [];
 
   // adding geojson from a file
 
@@ -40,10 +42,10 @@ DARK_PNG = tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_no
 
   markers: Layer[] =
   [
-    marker([35, -76], { icon: this.createIcon() }),
-    marker([36, -81], { icon: this.createIcon() }),
-    marker([37, -88], { icon: this.createIcon() }),
-    marker([38, -99], { icon: this.createIcon() }),
+    marker([35, -76],  { icon: this.createIcon() }),
+    marker([36, -81],  { icon: this.createIcon() }),
+    marker([37, -88],  { icon: this.createIcon() }),
+    marker([38, -99],  { icon: this.createIcon() }),
     marker([39, -111], { icon: this.createIcon() })
   ];
 
@@ -57,9 +59,14 @@ DARK_PNG = tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_no
     });
   }
 
-constructor(private http: HttpClient) { }
+constructor(private _mapService: MapserviceService) { }
 
   ngOnInit() {
+
+    this._mapService.getGeoJson()
+    .subscribe(data => this.geoJsonData = data);
+
+
     this.http.get<any>('/assets/geojson/USA.geo.json')
       .subscribe(usa => {
         const usaLayer = geoJSON(usa);
