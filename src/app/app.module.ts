@@ -5,7 +5,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { AppComponent } from './app.component';
 import { MapperComponent } from './mapper/mapper.component';
 import { ChildComponent } from './child/child.component';
-import { MapserviceService } from './services/mapservice.service';
+// import { MapserviceService } from './services/mapservice.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,7 @@ import { MapserviceService } from './services/mapservice.service';
     HttpClientModule,
     LeafletModule.forRoot()
   ],
-  providers : [MapserviceService],
+  providers : [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
