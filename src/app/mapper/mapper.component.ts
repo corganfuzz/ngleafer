@@ -76,36 +76,6 @@ constructor(public _mapService: MapserviceService) {
 
     });
 
-    // this.homeworld = this.http.get('/assets/geojson/USA.geo.json')
-    // .pipe(mergeMap(character => this.http.get('/assets/geojson/CAN.geo.json')));
-
-    // const usa = this.http.get('/assets/geojson/countries.geo.json');
-    // const canada = this.http.get('/assets/geojson/CAN.geo.json');
-    // const mexico = this.http.get('/assets/geojson/MEX.geo.json');
-
-    // forkJoin([usa]).subscribe(results => {
-
-
-
-
-
-      // const final = geoJSON(this.bullshit);
-
-    //   this.layers = [final];
-    // });
-
-    // this.http.get<any>('/assets/geojson/USA.geo.json').subscribe(usa => {
-    //     this.http.get<any>('/assets/geojson/CAN.geo.json').subscribe(can => {
-
-    // const usaLayer = geoJSON(usa);
-    // const canLayer = geoJSON(can);
-
-    // const canLayer = geoJSON(mex);
-
-    // console.log(usa);
-
-    // this.layers = [usaLayer, canLayer];
-
     this.layersControl = {
       baseLayers: {
         'Tactical Map': this.DARK_PNG,
