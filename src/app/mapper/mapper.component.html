@@ -1,7 +1,12 @@
 <div class="mapper"
-     leaflet
-     [leafletLayers]="layers"
-     [leafletOptions]="options"
-     [leafletLayersControl]="layersControl">
-</div>
+  leaflet
+  [leafletLayers]="layers"
+  [leafletOptions]="options"
+  [leafletLayersControl]="layersControl">
+
+    <div *ngFor="let m of markers" [leafletLayer]="m"></div>
+
+  </div>
+<!--
+     [leafletLayers]="layers" -->
 

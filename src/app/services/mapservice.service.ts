@@ -8,16 +8,20 @@ import { Observable } from 'rxjs';
 })
 export class MapserviceService {
 
-  private _url = '/assets/countries.geo.json';
+  private _url = '/assets/wellscountries.geo.json';
+  private _markers = '../../assets/wellsmarkers/wells.json';
 
   constructor(private http: HttpClient) {
-    this.http.get(this._url).subscribe(data => {
-      console.log('countries', data);
-    });
-
+    // this.http.get(this._url).subscribe(data => {
+    //   console.log('countries', data);
+    // });
   }
 
   getGeoJson(): Observable<any> {
     return this.http.get<any>(this._url);
+  }
+
+  getMarkers(): Observable<any> {
+   return this.http.get<any>(this._markers);
   }
 }
