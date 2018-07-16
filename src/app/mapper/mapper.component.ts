@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { latLng, Layer, tileLayer, marker, icon, geoJSON, Marker} from 'leaflet';
 import { MapserviceService } from '../services/mapservice.service';
+import { ICoords } from './coords';
 
 @Component({
   selector: 'app-mapper',
   templateUrl: './mapper.component.html',
-  styleUrls: ['./mapper.component.css']
+  styleUrls: ['./mapper.component.css'],
 })
 
 export class MapperComponent implements OnInit {
@@ -20,9 +21,11 @@ export class MapperComponent implements OnInit {
 
     public markers: Marker[];
 
+    public data: ICoords[];
+
   // adding geojson from a file
 
-DARK_PNG = tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}{r}.' + 'png', {
+DARK_PNG = tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}{r}.' + 'png', {
     detectRetina: true,
     maxZoom: 18,
     attribution: 'My Own Business'
@@ -40,35 +43,6 @@ DARK_PNG = tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_no
     attribution: 'My Third Business'
   });
 
-  // options = {
-  //   layers: [this.DARK_PNG],
-  //   zoom: 3,
-  //   center: latLng(11, -40)
-  // };
-
-  // markers: Layer[] =
-  // [
-  //   marker([35, -76], { icon: this.createIcon() }),
-  //   marker([36, -81], { icon: this.createIcon() }),
-  //   marker([37, -88], { icon: this.createIcon() }),
-  //   marker([38, -99], { icon: this.createIcon() }),
-  //   marker([39, -111], { icon: this.createIcon() })
-  // ];
-
-    createIcon() {
-    return icon({
-      iconSize: [25, 25],
-      iconAnchor: [13, 41],
-      iconUrl: 'assets/yellow.png',
-    });
-  }
-
-    // options = {
-    //   layers: [this.DARK_PNG, this.markers],
-    //   zoom: 3,
-    //   center: latLng(11, -40)
-    // };
-
 constructor(public _mapService: MapserviceService) {
 
  }
@@ -80,49 +54,89 @@ constructor(public _mapService: MapserviceService) {
     });
 
     this._mapService.getMarkers().subscribe(data => {
+      // this.zone.run(() => {
 
+      this.data = data;
       // console.log('markers', data);
 
-        const coords = data.map(coord => {
-          const bruh = [coord.lat, coord.lng];
-          return bruh;
-        });
+      // if (data.length > 0) {
+        data.map(a => {
+          const lat = a.lat;
+          const lng = a.lng;
+          const name = a.name;
 
-        console.log('coords', coords);
+
+          // console.log('lats', lat);
+          // console.log('lngs', lng);
+
+          const newMarker = marker(
+            [lat, lng], {
+              icon: icon({
+                iconSize: [25, 25],
+                iconAnchor: [13, 41],
+                iconUrl: 'assets/yellow.png',
+              })
+            }
+          );
+          newMarker.bindPopup('<p>' + name + '</p>', {autoPan: true});
+          // console.log('newmarker', newMarker);
+          // this.markers.push(newMarker);
+          this.markers = [newMarker];
+          console.log('total', this.markers);
+        // });
+      });
+      // }
+
+        // const coords = data.map((a, index) => {
+        // let lat = a.lat;
+        // let lng = a.lng;
+
+        //   // const bruh = marker([coord.lat, coord.lng]);
+        //   // return bruh;
+        // });
+
+        // console.log('coords', coords);
+
+      // function createIcon() {
+      //   return icon({
+      //     iconSize: [25, 25],
+      //     iconAnchor: [13, 41],
+      //     iconUrl: 'assets/yellow.png'
+      //   });
+      // }
 
       // this.markers = marker(coords,
       //   {
-      //     icon: icon({
-      //       iconSize: [25, 25],
-      //       iconAnchor: [13, 41],
-      //       iconUrl: 'assets/yellow.png',
-      //     })
+          // icon: icon({
+          //   iconSize: [25, 25],
+          //   iconAnchor: [13, 41],
+          //   iconUrl: 'assets/yellow.png',
+          // })
       //   });
 
+      // this.markers.push(coords);
+
+      // function createIcon2() {
+      //   return icon({
+      //     iconSize: [25, 25],
+      //     iconAnchor: [13, 41],
+      //     iconUrl: 'assets/yellow.png',
+      //   });
+      // }
+
+
       // this.markers =
-      // [
-      //   marker(coords, {icon: this.createIcon() })
-      // ];
+      //   [
+      //     marker([35, -76], { icon: createIcon2() }),
+      //     marker([36, -81], { icon: createIcon2() }),
+      //     marker([37, -88], { icon: createIcon2() }),
+      //     marker([38, -99], { icon: createIcon2() }),
+      //     marker([39, -111], { icon: createIcon2() })
+      //   ];
+
+      //   console.log('working', this.markers);
 
 
-      this.markers =
-        [
-          marker([35, -76], { icon: this.createIcon() }),
-          marker([36, -81], { icon: this.createIcon() }),
-          marker([37, -88], { icon: this.createIcon() }),
-          marker([38, -99], { icon: this.createIcon() }),
-          marker([39, -111], { icon: this.createIcon() })
-        ];
-
-        console.log('working', this.markers);
-
-      function createIcon() {
-        return icon({
-          iconSize: [25, 25],
-          iconAnchor: [13, 41],
-          iconUrl: 'assets/yellow.png',
-        });
-      }
 
 
 
