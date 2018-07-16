@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { latLng, Layer, tileLayer, marker, icon, geoJSON, Marker} from 'leaflet';
+import { latLng, Layer, tileLayer, marker, icon, geoJSON, Marker, Map} from 'leaflet';
 import { MapserviceService } from '../services/mapservice.service';
 import { ICoords } from './coords';
 
@@ -19,9 +19,11 @@ export class MapperComponent implements OnInit {
 
     public options: any;
 
-    public markers: Marker[];
+    public markers: Marker[] = [];
 
     public data: ICoords[];
+
+    public map: Map;
 
   // adding geojson from a file
 
@@ -43,18 +45,26 @@ DARK_PNG = tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_al
     attribution: 'My Third Business'
   });
 
+
+
 constructor(public _mapService: MapserviceService) {
 
  }
 
   ngOnInit() {
+
+
     this._mapService.getGeoJson().subscribe(data => {
-         const final = geoJSON(data);
+         const options = {'color': 'red'};
+         const final = geoJSON(data, options);
          this.layers = [final];
     });
 
     this._mapService.getMarkers().subscribe(data => {
       // this.zone.run(() => {
+
+
+
 
       this.data = data;
       // console.log('markers', data);
@@ -65,7 +75,6 @@ constructor(public _mapService: MapserviceService) {
           const lng = a.lng;
           const name = a.name;
 
-
           // console.log('lats', lat);
           // console.log('lngs', lng);
 
@@ -73,15 +82,14 @@ constructor(public _mapService: MapserviceService) {
             [lat, lng], {
               icon: icon({
                 iconSize: [25, 25],
-                iconAnchor: [13, 41],
                 iconUrl: 'assets/yellow.png',
               })
             }
           );
           newMarker.bindPopup('<p>' + name + '</p>', {autoPan: true});
           // console.log('newmarker', newMarker);
-          // this.markers.push(newMarker);
-          this.markers = [newMarker];
+          this.markers.push(newMarker);
+          //  this.markers = [newMarker];
           console.log('total', this.markers);
         // });
       });
@@ -124,7 +132,6 @@ constructor(public _mapService: MapserviceService) {
       //   });
       // }
 
-
       // this.markers =
       //   [
       //     marker([35, -76], { icon: createIcon2() }),
@@ -135,10 +142,6 @@ constructor(public _mapService: MapserviceService) {
       //   ];
 
       //   console.log('working', this.markers);
-
-
-
-
 
     });
 
